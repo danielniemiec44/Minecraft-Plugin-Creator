@@ -15,17 +15,17 @@ public class Main extends Application {
     }
 
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("JavaFX WebView Example");
+        primaryStage.setTitle("Login to your account.");
 
         WebView webView = new WebView();
 
         URL url = this.getClass().getResource("login.html");
         webView.getEngine().load(url.toString());
 
-        VBox vBox = new VBox(webView);
-        Scene scene = new Scene(vBox, 960, 600);
+        Scene scene = new Scene(webView, 400, 500);
 
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
 
     }
