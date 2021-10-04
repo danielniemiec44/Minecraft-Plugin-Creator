@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
+        <style>
+            body {
+                margin: 0;
+                cursor: default;
+                user-select: none;
+                font-family: Helvetica;
+            }
+            
+            a {
+                text-decoration: none;
+            }
+
+            #sidebar {
+                position: absolute;
+                width: 250px;
+                background: rgb(47, 49, 54);
+                padding: 0 20px;
+                box-sizing: border-box;
+                top: 40px;
+                bottom: 0
+            }
+
+            .title {
+                position: relative;
+                font-size: 17px;
+                width: 180px;
+                float: left;
+            }
+
+            .title_wrapper {
+                color: rgb(117, 146, 151);
+                margin: 20px 0
+            }
+
+            .title_wrapper:hover {
+                color: white
+            }
+
+            .add_icon {
+                cursor: pointer;
+                font-size: 13px;
+            }
+
+            .sidebar_item {
+                position: relative;
+                padding: 12px;
+                margin: 5px;
+                color: rgb(142, 146, 151);
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .sidebar_item:hover {
+                background: rgb(52, 55, 60);
+                color: rgb(204, 216, 222)
+            }
+
+
+            .tasks_view {
+                position: fixed;
+                top: 40px;
+                left: 250px;
+                bottom: 0;
+                right: 0;
+                padding: 20px;
+                color: rgb(175, 177, 181);
+                cursor: default;
+                display: none;
+                background: rgb(54, 57, 63)
+            }
+
+
+            .task {
+                position: relative;
+                width: 400px;
+                margin: 10px 0;
+                padding: 20px;
+                border-radius: 5px;
+                cursor: grab;
+                background: rgb(54, 57, 63);
+                color: rgb(175, 177, 181);
+            }
+
+            .task:hover {
+                background: rgb(58, 62, 68)
+            }
+
+            hr {
+                border: none;
+                height: 2px;
+                background-color: rgb(66, 69, 74);
+                margin: 20px 0
+            }
+
+            #navbar {
+                position: absolute;
+                width: 100%;
+                height: 40px;
+                background: rgb(32, 34, 37);
+                line-height: 40px;
+                padding: 0 20px;
+                box-sizing: border-box;
+                color: rgb(182, 181, 181);
+                font-size: 16px;
+            }
+
+            #project_name {
+                color: rgb(114, 118, 125);
+                text-align: center
+            }
+
+            .grid-container {
+                display: grid;
+                grid-template-columns: auto auto auto;
+                
+            }
+
+            .tool {
+                float: left;
+                padding: 0 10px;
+                cursor: pointer
+            }
+
+            .tool:hover {
+                background: rgb(80, 80, 80)
+            }
+
+            .dark {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.7)
+            }
+
+            .window {
+                position: fixed;
+                bottom: 15vh;
+                background: rgb(47, 49, 54);
+                left: 15vw;
+                top: 15vh;
+                right: 15vw;
+                border-radius: 10px;
+                padding: 20px;
+            }
+
+            .window_title {
+                color: rgb(117, 146, 151);
+                font-size: 20px
+            }
+
+            .window_content {
+                font-size: 16px;
+                line-height: 30px;
+                color: white
+            }
+
+            .close_button {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                font-size: 20px;
+                cursor: pointer
+            }
+
+            .add_icon .tooltip {
+                position: absolute;
+                display: none;
+            }
+
+            #context_menu .tooltip {
+                position: fixed;
+            }
+
+            .tooltip {
+                width: 300px;
+                //height: 250px;
+                background-color: rgb(54, 57, 63);
+                color: white;
+                border-radius: 5px;
+                padding: 20px;
+                z-index: 1;
+                box-shadow: 0px 0px 5px black;
+                font-size: 16px;
+                cursor: default
+                }
+
+                .tooltip_title {
+                    font-size: 20px;
+                }
+
+
+                .tooltip_list div {
+                    color: rgb(142, 146, 151);
+                    padding: 8px 0;
+                    cursor: pointer;
+                    margin: 5px 0
+                }
+
+                .tooltip_list div:hover {
+                    background: rgb(52, 55, 60);
+                    color: rgb(204, 216, 222)
+                }
+
+                input {
+                    margin: 25px 0 10px 0;
+                    width: 100%;
+                    height: 25px;
+                    font-size: 14px;
+                    background: rgb(32, 34, 37);
+                    border: 0;
+                    color: white
+                }
+
+                #command_aliasses {
+                    margin: 10px 0
+                }
+
+                #context_menu {
+                    position: fixed;
+                    //display: block;
+                    width: 0;
+                    height: 0;
+                }
+
+                #context_menu .tooltip {
+                    padding: 10px;
+                    display: none
+                }
+
+                #sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+                #sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
+                #sortable li span { position: absolute; margin-left: -1.3em; }
+        </style>
+    </head>
+    <body>
+        <div id="navbar" class="grid-container">
+            <div id="tools" class="grid-item">
+                <div class="tool" id="tool_project">Project</div>
+                <div class="tool" id="tool_edit">Edit</div>
+                <div class="tool" id="tool_about">About</div>
+            </div>
+            <div id="project_name" class="grid-item">Minecraft Plugin Creator - Example</div>
+        </div>
+        <div id="sidebar">
+            <div class="title_wrapper">
+                <div class="title">
+                    EVENTS
+                </div>
+                <div class="add_icon" id="add_event_icon">➕
+                    <span class="tooltip">
+                        
+                    <div class="tooltip_title">Add event</div>
+                    <div><input type="text" /></div>
+                    <div class="tooltip_list">
+                        
+                    </div>
+                    
+                </span>
+            </div>
+            </div>
+                <div id="events">
+                   
+            </div>
+            <div class="title_wrapper">
+                <div class="title">
+                    COMMANDS
+                </div>
+                <div class="add_icon" id="add_command_icon">➕
+                    <span class="tooltip">
+                        
+                        <div class="tooltip_title">Add command</div>
+                        <div><input type="text" /></div>
+                        <div id="command_aliasses">Aliasses: <input type="text" /></div>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
+        
+
+
+
+
+
+        <script>
+            function addEvent(id) {
+                $("#events").append(`
+                    <div class="sidebar_item" id="event_` + id + `">` + events.get(id) + `</div>
+                    <div class="tasks_view" id="tasks_view_` + id + `">
+                            <div>TASKS - <span class="tasks_count">0</span></div>
+                            <hr />
+                            <ul id="sortable">
+
+                                </ul>
+                        </div>
+                `);
+
+                $("#event_" + id).click(function() {
+                    $(".tasks_view").hide();
+                    $("#tasks_view_" + id).show();
+
+                    $(".sidebar_item").css("background", "");
+                    $(".sidebar_item").css("color", "rgb(142, 146, 151)");
+
+                    $("#event_" + id).css("background", "rgb(52, 55, 60)");
+                    $("#event_" + id).css("color", "rgb(204, 216, 222)");
+                });
+
+                $("#add_event_" + id).remove();
+
+
+
+
+
+                $(function() {
+                    $.contextMenu({
+                        selector: ".sidebar_item", 
+                        callback: function(key, options) {
+                            if($(this).attr("id").includes("event")){
+                                removeEvent($(this).attr("id"));
+                                $(this).remove();
+                            }
+                        },
+                        items: {
+                            "remove": {name: "Remove", icon: "delete"},
+                        }
+                    });
+                });
+
+                
+                
+                
+            }
+
+            events = new Map();
+
+            events.set("on_enable", "Plugin enable");
+            events.set("on_disable", "Plugin disable")
+            events.set("player_login_event", "Player join the server");
+            events.set("player_quit_event", "Player leave the server");
+            events.set("player_interact_event", "Player interact");
+            events.set("player_move_event", "Player move");
+
+
+            function addEventsToList(value, key, map){
+                addEventToList(key);
+            }
+
+            events.forEach(addEventsToList);
+
+
+            function addEventToList(key) {
+                $(".add_icon .tooltip_list").append(`<div id="add_event_` + key + `">` + events.get(key) + `</div>`);
+                $("#add_event_" + key).click(function() {
+                 addEvent(key);
+             });
+            }
+
+            function removeEvent(id) {
+                key = id.split("_").slice(1).join("_");
+                addEventToList(key);
+                $("#tasks_view_" + key).remove();
+                $("#event_" + key).remove();
+            }
+
+            addEvent("on_enable");
+            addEvent("on_disable");
+
+            function addTask(tasksView, name) {
+                switch(name) {
+                    case "send_console_message":
+                        html = `
+                            <div class="task ui-state-default">Send message to console: <input type="text" /></div>
+                        `
+                        break;
+                    case "send_player_message":
+                        html = `
+                            <div class="task">Send message to the player: <input type="text" /></div>
+                        `
+                        break;
+                }
+                $("#tasks_view_" + tasksView + " #sortable").append(html);
+                tasksCount = $("#tasks_view_" + tasksView + " .tasks_count");
+                tasksCount.html(parseInt(tasksCount.html()) + 1);
+            }
+
+            addTask("on_enable", "send_console_message");
+            addTask("on_enable", "send_console_message");
+            addTask("on_disable", "send_console_message");
+
+
+
+
+
+
+
+            $(".add_icon").click(function(event) {
+                $(".tooltip").hide();
+                $("#" + $(this).attr("id") + " .tooltip").show();
+                event.stopPropagation();
+            })
+
+            $(window).click(function() {
+                $(".tooltip").hide();
+            });
+
+
+
+
+            $("#tool_about").click(function() {
+                showWindow("about", "About", `
+                    Author: DeeRave
+                    <br />
+                    License: Infinity
+                    <br />
+                    Registered to: danielniemiec44@gmail.com
+                `);
+            })
+
+            
+
+
+            function showWindow(id, title, content) {
+                $("body").append(`
+                <div id="` + id + `_window">
+                    <div class="dark"></div>
+                    <div class="window">
+                        <div class="window_title">` + title + `</div>
+                        <hr />
+                        <div class="window_content">` + content + `</div>
+                        <div class="close_button">❌</div>
+                    </div>
+                </div>
+                `);
+
+                $(".close_button").click(function() {
+                hideWindow(id);
+            });
+            }
+            
+
+            function hideWindow(id) {
+                $("#" + id + "_window").remove();
+            }
+
+            $(document).contextmenu(function() {
+                return false;
+            })
+        </script>
+
+
+<script>
+    $( function() {
+      $( "#sortable" ).sortable();
+      $( "#sortable" ).disableSelection();
+    } );
+    </script>
+    </body>
+</html>
