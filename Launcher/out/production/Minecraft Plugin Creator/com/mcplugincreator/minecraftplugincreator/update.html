@@ -1,0 +1,56 @@
+<!doctype HTML>
+<head>
+    <link rel="stylesheet" href="common/css/bootstrap.css" />
+    <link rel="stylesheet" href="common/css/all.css"/>
+    <link rel="stylesheet" href="common/css/fontawesome.css"/>
+    <script src="common/js/all.js"></script>
+    <script src="common/js/fontawesome.js"></script>
+    <script src="common/js/bootstrap.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        #logo {
+            width: 150px;
+            height: 150px;
+            background: url("icon.png") no-repeat center;
+            background-size: contain;
+            position: absolute;
+            top: 25px;
+            left: calc(50vw - 75px)
+        }
+
+        .spinner-border {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            left: calc(50vw - 100px);
+            //top: 100px
+        }
+
+        #main {
+            position: absolute;
+            top: 50px
+        }
+
+        #progress {
+            position: absolute;
+            width: 300px;
+            left: calc(50vw - 150px);
+            top: 250px
+        }
+    </style>
+</head>
+<body>
+        <div id="main">
+            <div id="logo" class=""></div>
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <div id="progress">
+                <div class="text-center">DOWNLOADING...</div>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
+            </div>
+            </div>
+        </div>
+</body>
